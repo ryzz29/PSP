@@ -1,4 +1,3 @@
-import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -12,14 +11,9 @@ public class Main {
     public static void main(String Args[]){
 
         invocarEleccionLista();
-        if (!salir) {
-            invocarOpciones(); //Imprimimos por pantalla las opciones que tiene nuestro usuario
-            invocarMenu();     //Comenzamos ya con el menú en cuanto a programación
-            if (!salir2){
-                System.out.println("FINISHED, un placer.");
-            }
-        }
+        System.out.println("Programa finalizado.");
     }
+
 
     /*
     Damos al usuario opciones sobre la lista de procesos que quiere usar y utilizamos una según su input
@@ -37,29 +31,32 @@ public class Main {
 
         try {
             System.out.println("Para empezar elige una de las dos opciones anteriores de listas de procesos:");
-            String opcionB = sn.next();
-
-            int i = Integer.parseInt(opcionB);
+            int opcionB = sn.nextInt();
 
             //Un switch sencillo, normal y corriente con sus opciones correspondientes a las de invocarOpciones()
-            switch (i) {
+            switch (opcionB) {
                 case 1:
                     algoritmo.generarListaProcesosA();
                     System.out.println("Usaremos la lista A");
+                    invocarOpciones();
+                    invocarMenu();
                     break; // break es opcional
 
                 case 2:
                     algoritmo.generarListaProcesosB();
                     System.out.println("Usaremos la lista B");
+                    invocarOpciones();
+                    invocarMenu();
                     break; // break es opcional
 
                 case 3:
                     algoritmo.generarListaProcesosC();
-                    System.out.println("Usaremos la lista B");
+                    System.out.println("Usaremos la lista C");
+                    invocarOpciones();
+                    invocarMenu();
                     break; // break es opcional
 
                 case 0:
-                    salir = true;
                     System.out.println("Bueno, nos vemos!");
                     break;
 
@@ -68,8 +65,9 @@ public class Main {
                     invocarEleccionLista();
             }
 
-        } catch (NumberFormatException e) {
-            System.out.println("Debes insertar un número");
+        } catch (InputMismatchException e) {
+            System.out.println("Debes insertar un número... \n");
+            sn.next();
             invocarEleccionLista();
         }
     }
@@ -84,7 +82,7 @@ public class Main {
         System.out.println("3. SJF");
         System.out.println("4. SRT");
         System.out.println("5. Salir");
-        System.out.println("0. Repetir las opciones");
+        System.out.println("0. Repetir las opciones\n");
     }
 
     /*
@@ -95,13 +93,10 @@ public class Main {
         try {
             //Pedimos un input del usuario
             System.out.println("Escribe el número de una de las opciones anteriores para continuar");
-            String opcion = sn.next();
-
-            //Pasamos el string a int dado que estamos seguros de que es un número porque comprobamos su numeralidad
-            int i = Integer.parseInt(opcion);
+            int opcion = sn.nextInt();
 
             //Un switch sencillo, normal y corriente con sus opciones correspondientes a las de invocarOpciones()
-            switch (i) {
+            switch (opcion) {
                 case 0:
                     invocarOpciones();
                     invocarMenu();
@@ -112,13 +107,11 @@ public class Main {
                     break; // break es opcional
 
                 case 2:
-                    try {
                         System.out.println("Escribe el número que quieres usar como Quantum");
-                        String opcionNum = sn.next();
-                        int opcionNumNum = Integer.parseInt(opcionNum);
+                        int opcionNum = sn.nextInt();
 
-                        if (opcionNumNum != 0) {
-                            algoritmo.RR(opcionNumNum);
+                        if (opcionNum != 0) {
+                            algoritmo.RR(opcionNum);
 
                         } else {
                             System.out.println("0 no es un número lógico para este caso, deberías replanteartelo...");
@@ -126,11 +119,6 @@ public class Main {
                             invocarMenu();
                         }
 
-                    } catch (NumberFormatException e) {
-                        System.out.println("Debes insertar un número... te devuelvo a la seleción de algoritmo...");
-                        invocarOpciones();
-                        invocarMenu();
-                    }
                     break; // break es opcional
 
                 case 3:
@@ -156,8 +144,9 @@ public class Main {
                     // Declaraciones
             }
 
-        } catch (NumberFormatException e) {
-            System.out.println("Debes insertar un número...");
+        } catch (InputMismatchException e) {
+            System.out.println("Debes insertar un número...\n");
+            sn.next();
             invocarOpciones();
             invocarMenu();
         }
