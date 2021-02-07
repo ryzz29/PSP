@@ -4,21 +4,30 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class WalkyTwo {
+    //Boolean preparado para cortar el bucle del menú
     static boolean wannaContinue = true;
+    //Scanner utilizado para pillar los inputs de consola
     static Scanner sn = new Scanner(System.in);
+    //Inicializamos la InetAddress que utilizaremos para mandar los paquetes
     static InetAddress destino = null;
+    //Puerto donde trabajaremos
     static int port = 1;
 
     public static void main(String[] argv) throws Exception {
+        //Utilizamos el puerto donde vamos a mandarlo
         DatagramSocket socket = new DatagramSocket(2);
         mensajesEtapaUno();
         switchEtapaUno();
+        //Bucle para el menú siguiendo la descripción del pdf del ejercicio
         while (wannaContinue) {
             mensajesEtapaDos();
             switchEtapaDos(socket);
         }
     }
 
+    /**
+     * Método que nos imprime por pantalla la información relevante sobre el primer switch de opciones
+     */
     public static void mensajesEtapaUno(){
         System.out.println("Ahora es necesario que selecciones la frecuencia de comunicación");
         System.out.println("Escribe el número de una de las siguientes opciones para elegir la opción");
@@ -26,6 +35,9 @@ public class WalkyTwo {
         System.out.println("2. Utilizar una frecuencia disinta ");
     }
 
+    /**
+     * Método que ofrece el primer switch de opciones sobre la "frecuencia" en que trabajeremos
+     */
     public static void switchEtapaUno(){
         try {
             int opcionNumero = sn.nextInt();
@@ -47,6 +59,9 @@ public class WalkyTwo {
         }
     }
 
+    /**
+     * Método que nos crea una InetAddress utilizando un string con el formato adecuado
+     */
     public static void creaAddress() {
         try {
             destino = InetAddress.getByName(sn.next());
@@ -58,6 +73,9 @@ public class WalkyTwo {
         }
     }
 
+    /**
+     * Método que nos imprime por pantalla la información relevante sobre el segundo switch de opciones
+     */
     public static void mensajesEtapaDos(){
         System.out.println("1. Hablar");
         System.out.println("2. Recibir");
@@ -65,6 +83,9 @@ public class WalkyTwo {
 
     }
 
+    /**
+     * Método que ofrece el segundo switch de opciones, en este caso sobre hablar, escuchar o salir
+     */
     public static void switchEtapaDos(DatagramSocket socket){
         try {
             int opcionNumero = sn.nextInt();
@@ -90,8 +111,13 @@ public class WalkyTwo {
         }
     }
 
+    /**
+     * método que utiliza un DatagramSocket dado se prepara para recibir un DatagramPacket con el String de información de la función hablar de otro walky
+     * @param socket
+     * @throws IOException
+     */
     public static void escuchar(DatagramSocket socket) throws IOException {
-        System.out.println(" - esperando -");
+        System.out.println(" -  esperando mensaje ... -");
         byte[] bufer = new byte[10240];//bufer para recibir el datagrama
         DatagramPacket recibo = new DatagramPacket(bufer, bufer.length, destino, port);
         socket.receive(recibo);//recibo datagrama
@@ -100,13 +126,17 @@ public class WalkyTwo {
 
         //VISUALIZO INFORMACIÓN
         System.out.println(" *GHGHHGHGHGHH*");
-        System.out.println(paquete.trim());
+        System.out.println(paquete.trim()); //String
         System.out.println(" *GHGHHGHGHGHH* \n");
     }
 
+    /**
+     * método que utiliza un DatagramSocket dado que se a partir de un input de usuario envía un DatagramPacket con un string
+     * @param socket
+     * @throws IOException
+     */
     public static void hablar(DatagramSocket socket) throws IOException {
         System.out.println(" *GHGHHGHGHGHH* \n Canal abierto, puedes hablar \n *GHGHHGHGHGHH*");
-
         byte[] mensaje = new byte[10240];
         Scanner sn = new Scanner(System.in);
         String premensaje = sn.nextLine();
